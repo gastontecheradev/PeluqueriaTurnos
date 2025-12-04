@@ -1,0 +1,50 @@
+﻿@model IEnumerable<PeluqueriaTurnos.Models.Appointment>
+@{
+    ViewData["Title"] = "Panel de turnos";
+}
+
+<section class="nf-section">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="nf-section-title mb-1">Panel de turnos</h1>
+                <p class="nf-section-subtitle mb-0">Vista general de todos los turnos del salón.</p>
+            </div>
+        </div>
+
+        <div class="nf-table-wrapper">
+            <table class="table nf-table align-middle">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Servicio</th>
+                        <th>Estilista</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model)
+                    {
+                        <tr>
+                            <td>@a.Start.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@a.ClientName</td>
+                            <td>@a.Service.Name</td>
+                            <td>@a.Stylist.Name</td>
+                            <td>@a.Status</td>
+                            <td class="text-end">
+                                @if (a.Status == PeluqueriaTurnos.Models.AppointmentStatus.Booked && a.Start > DateTime.Now)
+                                {
+                                    <a asp-action="Cancel" asp-route-id="@a.Id" class="btn btn-sm nf-btn-secondary">
+                                        Cancelar
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

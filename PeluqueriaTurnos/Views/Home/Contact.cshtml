@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Contacto";
+}
+
+<section class="nf-section">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-md-5">
+                <h1 class="nf-section-title mb-3">Contacto & ubicación</h1>
+                <p class="text-muted">
+                    Escribinos por WhatsApp o mail para consultas especiales, cambios de turno
+                    o servicios para grupos.
+                </p>
+
+                <ul class="list-unstyled nf-contact-list">
+                    <li>
+                        <span class="nf-contact-label">Teléfono / WhatsApp</span>
+                        <span>@ViewBag.Phone</span>
+                    </li>
+                    <li>
+                        <span class="nf-contact-label">Email</span>
+                        <span>@ViewBag.Email</span>
+                    </li>
+                    <li>
+                        <span class="nf-contact-label">Ciudad</span>
+                        <span>@ViewBag.City</span>
+                    </li>
+                </ul>
+
+                <p class="text-muted small">
+                    * Podés agendar tu turno directamente desde la web creando tu usuario.
+                </p>
+            </div>
+            <div class="col-md-7">
+                <div class="nf-card nf-map-placeholder">
+                    <p class="text-muted mb-2">Mapa</p>
+                    <p class="mb-0">
+                        Aquí podés incrustar un mapa de Google Maps con la dirección exacta de la peluquería.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,367 @@
+:root {
+    --nf-bg: #020617;
+    --nf-bg-alt: #020617;
+    --nf-surface: #0b1120;
+    --nf-surface-alt: #020617;
+    --nf-border: rgba(148, 163, 184, 0.15);
+    --nf-accent: #6366f1;
+    --nf-accent-soft: rgba(99, 102, 241, 0.18);
+    --nf-accent-strong: #38bdf8;
+    --nf-text: #e5e7eb;
+    --nf-muted: #9ca3af;
+    --nf-danger: #ef4444;
+    --nf-radius-lg: 1.25rem;
+    --nf-radius-full: 999px;
+    --nf-shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.85);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body.nf-body {
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+    color: var(--nf-text);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* NAVBAR */
+
+.nf-navbar {
+    background: linear-gradient(90deg, rgba(15,23,42,0.9), rgba(15,23,42,0.92), rgba(15,23,42,0.96));
+    border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+    backdrop-filter: blur(16px);
+}
+
+.nf-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 14px;
+    background: radial-gradient(circle at 0 0, #38bdf8, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #0b1120;
+    font-size: 18px;
+}
+
+.nf-brand-text span {
+    font-size: 15px;
+}
+
+.nf-main {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+}
+
+/* HERO */
+
+.nf-hero {
+    padding: 4.5rem 0 3.5rem;
+    position: relative;
+}
+
+    .nf-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("/img/hero/hero-barber.jpg");
+        background-size: cover;
+        background-position: center;
+        opacity: 0.18;
+        filter: grayscale(0.1);
+        z-index: -2;
+    }
+
+    .nf-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, #020617 0, rgba(2,6,23,0.9) 40%, rgba(2,6,23,0.6) 100%);
+        z-index: -1;
+    }
+
+.nf-hero-inner {
+    position: relative;
+    z-index: 1;
+}
+
+.nf-hero-title {
+    font-family: 'Poppins', system-ui;
+    font-size: clamp(2.2rem, 3vw, 2.7rem);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    margin-bottom: 1rem;
+}
+
+    .nf-hero-title span {
+        background: linear-gradient(to right, #38bdf8, #6366f1);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+.nf-hero-subtitle {
+    font-size: 1rem;
+    color: var(--nf-muted);
+    max-width: 30rem;
+}
+
+.nf-hero-card {
+    background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.98));
+    border-radius: var(--nf-radius-lg);
+    padding: 1.75rem 1.5rem;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    box-shadow: var(--nf-shadow-soft);
+}
+
+.nf-hero-service + .nf-hero-service {
+    margin-top: 0.6rem;
+}
+
+.nf-hero-service small {
+    font-size: 0.8rem;
+}
+
+.nf-price {
+    font-weight: 600;
+    color: var(--nf-accent-strong);
+}
+
+/* SECCIONES */
+
+.nf-section {
+    padding: 3.5rem 0;
+}
+
+.nf-section-alt {
+    background: radial-gradient(circle at top left, rgba(15,23,42,0.8), rgba(15,23,42,0.98));
+}
+
+.nf-section-title {
+    font-family: 'Poppins', system-ui;
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+.nf-section-subtitle {
+    color: var(--nf-muted);
+    max-width: 32rem;
+}
+
+.nf-section-header {
+    margin-bottom: 2rem;
+}
+
+/* CARDS */
+
+.nf-card {
+    background: radial-gradient(circle at top, #0b1120, #020617);
+    border-radius: var(--nf-radius-lg);
+    border: 1px solid var(--nf-border);
+    padding: 1.5rem;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.8);
+}
+
+.nf-card-img img {
+    border-radius: 1rem;
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+.nf-card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+}
+
+.nf-card-text {
+    font-size: 0.9rem;
+}
+
+/* Estilistas */
+
+.nf-avatar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.nf-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 999px;
+    object-fit: cover;
+    border: 2px solid rgba(148, 163, 184, 0.45);
+}
+
+/* Botones */
+
+.nf-btn-primary {
+    background: linear-gradient(90deg, #6366f1, #38bdf8);
+    border: none;
+    border-radius: var(--nf-radius-full);
+    color: #020617;
+    padding-inline: 1.5rem;
+    font-weight: 600;
+}
+
+    .nf-btn-primary:hover {
+        filter: brightness(1.05);
+    }
+
+.nf-btn-outline {
+    border-radius: var(--nf-radius-full);
+    border: 1px solid rgba(148, 163, 184, 0.6);
+    color: var(--nf-text);
+    background: transparent;
+}
+
+    .nf-btn-outline:hover {
+        background: rgba(15, 23, 42, 0.9);
+    }
+
+.nf-btn-secondary {
+    border-radius: var(--nf-radius-full);
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    background: rgba(15, 23, 42, 0.9);
+    color: var(--nf-text);
+}
+
+.nf-btn-danger {
+    border-radius: var(--nf-radius-full);
+    border: none;
+    background: linear-gradient(90deg, #ef4444, #f97316);
+    color: #020617;
+}
+
+/* Badges */
+
+.nf-badge-soft {
+    background: rgba(15, 23, 42, 0.9);
+    border-radius: 999px;
+    padding: 0.2rem 0.9rem;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    color: var(--nf-muted);
+    font-size: 0.75rem;
+}
+
+/* Footer */
+
+.nf-footer {
+    border-top: 1px solid rgba(148, 163, 184, 0.18);
+    padding: 1.5rem 0;
+    background: radial-gradient(circle at top, #020617, #020617);
+}
+
+.nf-footer-links a {
+    color: var(--nf-muted);
+    font-size: 0.85rem;
+}
+
+    .nf-footer-links a:hover {
+        color: var(--nf-text);
+    }
+
+/* Tablas */
+
+.nf-table-wrapper {
+    border-radius: var(--nf-radius-lg);
+    border: 1px solid var(--nf-border);
+    overflow: hidden;
+}
+
+.nf-table {
+    margin-bottom: 0;
+    color: var(--nf-text);
+    font-size: 0.92rem;
+}
+
+    .nf-table thead {
+        background: rgba(15, 23, 42, 0.96);
+    }
+
+    .nf-table tbody tr:nth-child(even) {
+        background: rgba(15, 23, 42, 0.75);
+    }
+
+/* Auth */
+
+.nf-auth-wrapper {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nf-auth-card {
+    max-width: 420px;
+    width: 100%;
+    background: radial-gradient(circle at top, #0b1120, #020617);
+    border-radius: var(--nf-radius-lg);
+    border: 1px solid var(--nf-border);
+    padding: 2.25rem 2rem;
+    box-shadow: var(--nf-shadow-soft);
+}
+
+.nf-auth-title {
+    font-family: 'Poppins', system-ui;
+    font-size: 1.7rem;
+}
+
+/* Inputs */
+
+.nf-input {
+    background: rgba(15, 23, 42, 0.9);
+    border-radius: 0.9rem;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    color: var(--nf-text);
+}
+
+    .nf-input:focus {
+        border-color: var(--nf-accent);
+        box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3);
+    }
+
+/* Contact */
+
+.nf-contact-list {
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+    .nf-contact-list li + li {
+        margin-top: 0.7rem;
+    }
+
+.nf-contact-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--nf-muted);
+}
+
+/* Map placeholder */
+
+.nf-map-placeholder {
+    min-height: 220px;
+}
+
+/* Responsivo */
+
+@media (max-width: 767.98px) {
+    .nf-hero {
+        padding-top: 3.2rem;
+    }
+
+        .nf-hero::after {
+            background: linear-gradient(to bottom, #020617 0, rgba(2,6,23,0.96) 40%, rgba(2,6,23,0.9) 100%);
+        }
+}

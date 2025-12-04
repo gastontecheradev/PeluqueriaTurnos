@@ -1,0 +1,74 @@
+﻿@model PeluqueriaTurnos.Models.Appointment
+@using PeluqueriaTurnos.Models
+@{
+    ViewData["Title"] = "Reservar turno";
+    var services = (IEnumerable<Service>)ViewBag.Services;
+    var stylists = (IEnumerable<Stylist>)ViewBag.Stylists;
+}
+
+<section class="nf-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="nf-card nf-card-form">
+                    <h1 class="nf-section-title mb-2">Reservar turno</h1>
+                    <p class="nf-section-subtitle mb-4">
+                        Elegí el servicio, estilista y horario que mejor se adapte a vos.
+                    </p>
+
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Servicio</label>
+                            <select asp-for="ServiceId" class="form-select nf-input">
+                                <option value="">Seleccionar...</option>
+                                @foreach (var s in services)
+                                {
+                                    <option value="@s.Id">@s.Name (@s.DurationMinutes min)</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ServiceId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Estilista</label>
+                            <select asp-for="StylistId" class="form-select nf-input">
+                                <option value="">Primero disponible</option>
+                                @foreach (var st in stylists)
+                                {
+                                    <option value="@st.Id">@st.Name</option>
+                                }
+                            </select>
+                            <span asp-validation-for="StylistId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Start" class="form-label">Fecha y hora</label>
+                            <input asp-for="Start" type="datetime-local" class="form-control nf-input" />
+                            <span asp-validation-for="Start" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ClientName" class="form-label">Nombre para el turno</label>
+                            <input asp-for="ClientName" class="form-control nf-input" />
+                            <span asp-validation-for="ClientName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ClientPhone" class="form-label">Teléfono de contacto</label>
+                            <input asp-for="ClientPhone" class="form-control nf-input" />
+                            <span asp-validation-for="ClientPhone" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn nf-btn-primary w-100">Confirmar turno</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
