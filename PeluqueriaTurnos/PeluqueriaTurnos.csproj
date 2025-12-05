@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img\stylists\" />
-    <Folder Include="wwwroot\img\services\" />
   </ItemGroup>
 
 </Project>
