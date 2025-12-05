@@ -1,18 +1,19 @@
 :root {
-    --nf-bg: #020617;
-    --nf-bg-alt: #020617;
-    --nf-surface: #0b1120;
-    --nf-surface-alt: #020617;
-    --nf-border: rgba(148, 163, 184, 0.15);
-    --nf-accent: #6366f1;
-    --nf-accent-soft: rgba(99, 102, 241, 0.18);
-    --nf-accent-strong: #38bdf8;
-    --nf-text: #e5e7eb;
-    --nf-muted: #9ca3af;
-    --nf-danger: #ef4444;
+    /* PALETA CLARA CÁLIDA – CREMA + COBRE */
+    --nf-bg: #fef3e7; /* crema muy suave */
+    --nf-bg-alt: #fde7cf; /* crema un poco más intensa */
+    --nf-surface: #ffffff; /* tarjetas */
+    --nf-surface-alt: #fef9f5;
+    --nf-border: rgba(15, 23, 42, 0.08);
+    --nf-accent: #f97316; /* naranja cobre */
+    --nf-accent-soft: rgba(249, 115, 22, 0.12);
+    --nf-accent-strong: #c2410c; /* cobre más oscuro */
+    --nf-text: #111827;
+    --nf-muted: #6b7280;
+    --nf-danger: #dc2626;
     --nf-radius-lg: 1.25rem;
     --nf-radius-full: 999px;
-    --nf-shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.85);
+    --nf-shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
 }
 
 *,
@@ -23,38 +24,55 @@
 
 body.nf-body {
     min-height: 100vh;
-    background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+    background: radial-gradient( circle at top, #fff7ed 0, var(--nf-bg) 55%, var(--nf-bg-alt) 100% );
     color: var(--nf-text);
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 a {
     text-decoration: none;
+    color: inherit;
 }
 
 /* NAVBAR */
 
 .nf-navbar {
-    background: linear-gradient(90deg, rgba(15,23,42,0.9), rgba(15,23,42,0.92), rgba(15,23,42,0.96));
-    border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid var(--nf-border);
     backdrop-filter: blur(16px);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
 }
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #111827;
+}
+
+    .navbar-dark .navbar-nav .nav-link:hover,
+    .navbar-dark .navbar-nav .nav-link.active {
+        color: var(--nf-accent-strong);
+    }
 
 .nf-logo {
     width: 36px;
     height: 36px;
     border-radius: 14px;
-    background: radial-gradient(circle at 0 0, #38bdf8, #6366f1);
+    background: radial-gradient(circle at 0 0, #fed7aa, #f97316);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    color: #0b1120;
+    color: #111827;
     font-size: 18px;
 }
 
 .nf-brand-text span {
     font-size: 15px;
+    color: #111827;
+}
+
+.nf-brand-text small {
+    font-size: 11px;
+    color: var(--nf-muted);
 }
 
 .nf-main {
@@ -76,16 +94,16 @@ a {
         background-image: url("/img/hero/hero-barber.jpg");
         background-size: cover;
         background-position: center;
-        opacity: 0.18;
+        opacity: 0.22;
         filter: grayscale(0.1);
-        z-index: -2;
+        /*z-index: -2;*/
     }
 
     .nf-hero::after {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(90deg, #020617 0, rgba(2,6,23,0.9) 40%, rgba(2,6,23,0.6) 100%);
+        background: linear-gradient(90deg, rgba(255, 248, 237, 0.98) 0, rgba(254, 243, 224, 0.96) 45%, rgba(253, 230, 205, 0.94) 100%);
         z-index: -1;
     }
 
@@ -100,10 +118,11 @@ a {
     font-weight: 700;
     letter-spacing: -0.05em;
     margin-bottom: 1rem;
+    color: #020617;
 }
 
     .nf-hero-title span {
-        background: linear-gradient(to right, #38bdf8, #6366f1);
+        background: linear-gradient(to right, #f97316, #ea580c);
         -webkit-background-clip: text;
         color: transparent;
     }
@@ -115,10 +134,10 @@ a {
 }
 
 .nf-hero-card {
-    background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.98));
+    background: var(--nf-surface);
     border-radius: var(--nf-radius-lg);
     padding: 1.75rem 1.5rem;
-    border: 1px solid rgba(148, 163, 184, 0.25);
+    border: 1px solid var(--nf-border);
     box-shadow: var(--nf-shadow-soft);
 }
 
@@ -128,6 +147,7 @@ a {
 
 .nf-hero-service small {
     font-size: 0.8rem;
+    color: var(--nf-muted);
 }
 
 .nf-price {
@@ -142,13 +162,14 @@ a {
 }
 
 .nf-section-alt {
-    background: radial-gradient(circle at top left, rgba(15,23,42,0.8), rgba(15,23,42,0.98));
+    background: linear-gradient(180deg, #fef9f5 0, #fef3e7 100%);
 }
 
 .nf-section-title {
     font-family: 'Poppins', system-ui;
     font-weight: 600;
     font-size: 1.6rem;
+    color: #111827;
 }
 
 .nf-section-subtitle {
@@ -163,11 +184,11 @@ a {
 /* CARDS */
 
 .nf-card {
-    background: radial-gradient(circle at top, #0b1120, #020617);
+    background: var(--nf-surface);
     border-radius: var(--nf-radius-lg);
     border: 1px solid var(--nf-border);
     padding: 1.5rem;
-    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.8);
+    box-shadow: var(--nf-shadow-soft);
 }
 
 .nf-card-img img {
@@ -181,13 +202,27 @@ a {
 .nf-card-title {
     font-size: 1.1rem;
     margin-bottom: 0.2rem;
+    color: #111827;
 }
 
 .nf-card-text {
     font-size: 0.9rem;
+    color: var(--nf-muted);
+}
+
+/* Foto grande */
+
+.nf-card-photo img {
+    border-radius: var(--nf-radius-lg);
+    width: 100%;
+    object-fit: cover;
 }
 
 /* Estilistas */
+
+.nf-card-stylist {
+    text-align: center;
+}
 
 .nf-avatar-wrapper {
     display: flex;
@@ -200,66 +235,72 @@ a {
     height: 96px;
     border-radius: 999px;
     object-fit: cover;
-    border: 2px solid rgba(148, 163, 184, 0.45);
+    border: 2px solid rgba(248, 113, 22, 0.5);
 }
 
 /* Botones */
 
 .nf-btn-primary {
-    background: linear-gradient(90deg, #6366f1, #38bdf8);
+    background: linear-gradient(90deg, #f97316, #ea580c);
     border: none;
     border-radius: var(--nf-radius-full);
-    color: #020617;
+    color: #fff;
     padding-inline: 1.5rem;
     font-weight: 600;
 }
 
     .nf-btn-primary:hover {
         filter: brightness(1.05);
+        color: #fff;
     }
 
 .nf-btn-outline {
     border-radius: var(--nf-radius-full);
-    border: 1px solid rgba(148, 163, 184, 0.6);
-    color: var(--nf-text);
+    border: 1px solid rgba(148, 163, 184, 0.7);
+    color: #111827;
     background: transparent;
 }
 
     .nf-btn-outline:hover {
-        background: rgba(15, 23, 42, 0.9);
+        background: #f3f4f6;
+        color: #111827;
     }
 
 .nf-btn-secondary {
     border-radius: var(--nf-radius-full);
-    border: 1px solid rgba(148, 163, 184, 0.4);
-    background: rgba(15, 23, 42, 0.9);
-    color: var(--nf-text);
+    border: 1px solid rgba(148, 163, 184, 0.9);
+    background: #ffffff;
+    color: #111827;
 }
+
+    .nf-btn-secondary:hover {
+        background: #f3f4f6;
+    }
 
 .nf-btn-danger {
     border-radius: var(--nf-radius-full);
     border: none;
-    background: linear-gradient(90deg, #ef4444, #f97316);
-    color: #020617;
+    background: linear-gradient(90deg, var(--nf-danger), #f97316);
+    color: #ffffff;
 }
 
 /* Badges */
 
 .nf-badge-soft {
-    background: rgba(15, 23, 42, 0.9);
+    background: #fef3c7;
     border-radius: 999px;
     padding: 0.2rem 0.9rem;
-    border: 1px solid rgba(148, 163, 184, 0.4);
-    color: var(--nf-muted);
+    border: 1px solid #fde68a;
+    color: #92400e;
     font-size: 0.75rem;
 }
 
 /* Footer */
 
 .nf-footer {
-    border-top: 1px solid rgba(148, 163, 184, 0.18);
+    border-top: 1px solid var(--nf-border);
     padding: 1.5rem 0;
-    background: radial-gradient(circle at top, #020617, #020617);
+    background: #ffffff;
 }
 
 .nf-footer-links a {
@@ -268,7 +309,7 @@ a {
 }
 
     .nf-footer-links a:hover {
-        color: var(--nf-text);
+        color: var(--nf-accent-strong);
     }
 
 /* Tablas */
@@ -277,20 +318,22 @@ a {
     border-radius: var(--nf-radius-lg);
     border: 1px solid var(--nf-border);
     overflow: hidden;
+    background: var(--nf-surface);
+    box-shadow: var(--nf-shadow-soft);
 }
 
 .nf-table {
     margin-bottom: 0;
-    color: var(--nf-text);
+    color: #111827;
     font-size: 0.92rem;
 }
 
     .nf-table thead {
-        background: rgba(15, 23, 42, 0.96);
+        background: #f9fafb;
     }
 
     .nf-table tbody tr:nth-child(even) {
-        background: rgba(15, 23, 42, 0.75);
+        background: #fefcf9;
     }
 
 /* Auth */
@@ -305,7 +348,7 @@ a {
 .nf-auth-card {
     max-width: 420px;
     width: 100%;
-    background: radial-gradient(circle at top, #0b1120, #020617);
+    background: var(--nf-surface);
     border-radius: var(--nf-radius-lg);
     border: 1px solid var(--nf-border);
     padding: 2.25rem 2rem;
@@ -315,20 +358,21 @@ a {
 .nf-auth-title {
     font-family: 'Poppins', system-ui;
     font-size: 1.7rem;
+    color: #111827;
 }
 
 /* Inputs */
 
 .nf-input {
-    background: rgba(15, 23, 42, 0.9);
+    background: #ffffff;
     border-radius: 0.9rem;
-    border: 1px solid rgba(148, 163, 184, 0.4);
-    color: var(--nf-text);
+    border: 1px solid rgba(148, 163, 184, 0.8);
+    color: #111827;
 }
 
     .nf-input:focus {
         border-color: var(--nf-accent);
-        box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3);
+        box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.25);
     }
 
 /* Contact */
@@ -362,6 +406,6 @@ a {
     }
 
         .nf-hero::after {
-            background: linear-gradient(to bottom, #020617 0, rgba(2,6,23,0.96) 40%, rgba(2,6,23,0.9) 100%);
+            background: linear-gradient(to bottom, rgba(255, 248, 237, 0.98) 0, rgba(254, 243, 224, 0.96) 40%, rgba(253, 230, 205, 0.94) 100%);
         }
 }

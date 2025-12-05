@@ -1,59 +1,61 @@
-﻿@@model IEnumerable<PeluqueriaTurnos.Models.Appointment>
+﻿@model List<PeluqueriaTurnos.Models.Appointment>
+@using System.Linq
+
 @{
     ViewData["Title"] = "Mis turnos";
 }
 
-    <section class="nf-section">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h1 class="nf-section-title mb-1">Mis turnos</h1>
-                    <p class="nf-section-subtitle mb-0">Revisá y gestioná tus próximas visitas.</p>
-                </div>
-                <a asp-action="Create" class="btn nf-btn-primary">Nuevo turno</a>
+<section class="nf-section">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="nf-section-title mb-1">Mis turnos</h1>
+                <p class="nf-section-subtitle mb-0">Revisá y gestioná tus próximas visitas.</p>
             </div>
-
-            @if (!Model.Any())
-            {
-                <div class="nf-card text-center py-5">
-                    <p class="mb-3">Todavía no tenés turnos agendados.</p>
-                    <a asp-action="Create" class="btn nf-btn-primary">Reservar mi primer turno</a>
-                </div>
-            }
-            else
-            {
-                <div class="nf-table-wrapper">
-                    <table class="table nf-table align-middle">
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Servicio</th>
-                                <th>Estilista</th>
-                                <th>Estado</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var a in Model)
-                            {
-                                <tr>
-                                    <td>@a.Start.ToString("dd/MM/yyyy HH:mm")</td>
-                                    <td>@a.Service.Name</td>
-                                    <td>@a.Stylist.Name</td>
-                                    <td>@a.Status</td>
-                                    <td class="text-end">
-                                        @if (a.Status == PeluqueriaTurnos.Models.AppointmentStatus.Booked && a.Start > DateTime.Now)
-                                        {
-                                            <a asp-action="Cancel" asp-route-id="@a.Id" class="btn btn-sm nf-btn-secondary">
-                                                Cancelar
-                                            </a>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
+            <a asp-action="Create" class="btn nf-btn-primary">Nuevo turno</a>
         </div>
-    </section>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="nf-card text-center py-5">
+                <p class="mb-3">Todavía no tenés turnos agendados.</p>
+                <a asp-action="Create" class="btn nf-btn-primary">Reservar mi primer turno</a>
+            </div>
+        }
+        else
+        {
+            <div class="nf-table-wrapper">
+                <table class="table nf-table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Servicio</th>
+                            <th>Estilista</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in Model)
+                        {
+                            <tr>
+                                <td>@a.Start.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@a.Service.Name</td>
+                                <td>@a.Stylist.Name</td>
+                                <td>@a.Status</td>
+                                <td class="text-end">
+                                    @if (a.Status == PeluqueriaTurnos.Models.AppointmentStatus.Booked && a.Start > DateTime.Now)
+                                    {
+                                        <a asp-action="Cancel" asp-route-id="@a.Id" class="btn btn-sm nf-btn-secondary">
+                                            Cancelar
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</section>

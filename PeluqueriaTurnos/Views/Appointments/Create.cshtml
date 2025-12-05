@@ -1,4 +1,4 @@
-﻿@model PeluqueriaTurnos.Models.Appointment
+﻿@model PeluqueriaTurnos.Models.AppointmentCreateViewModel
 @using PeluqueriaTurnos.Models
 @{
     ViewData["Title"] = "Reservar turno";
@@ -17,7 +17,7 @@
                     </p>
 
                     <form asp-action="Create" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
                         <div class="mb-3">
                             <label class="form-label">Servicio</label>
@@ -34,7 +34,7 @@
                         <div class="mb-3">
                             <label class="form-label">Estilista</label>
                             <select asp-for="StylistId" class="form-select nf-input">
-                                <option value="">Primero disponible</option>
+                                <option value="">Seleccionar...</option>
                                 @foreach (var st in stylists)
                                 {
                                     <option value="@st.Id">@st.Name</option>
@@ -61,7 +61,9 @@
                             <span asp-validation-for="ClientPhone" class="text-danger"></span>
                         </div>
 
-                        <button type="submit" class="btn nf-btn-primary w-100">Confirmar turno</button>
+                        <button type="submit" class="btn nf-btn-primary w-100">
+                            Confirmar turno
+                        </button>
                     </form>
                 </div>
             </div>

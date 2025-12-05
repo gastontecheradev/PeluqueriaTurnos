@@ -7,7 +7,7 @@ using PeluqueriaTurnos.Models;
 
 namespace PeluqueriaTurnos.Controllers
 {
-    [Authorize]
+    [Authorize] // cualquier usuario logueado puede entrar a este controlador
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,7 +19,7 @@ namespace PeluqueriaTurnos.Controllers
             _userManager = userManager;
         }
 
-        // Admin ve todos los turnos
+        // PANEL ADMIN: todos los turnos
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
@@ -33,15 +33,18 @@ namespace PeluqueriaTurnos.Controllers
             return View(appointments);
         }
 
-        // Cliente ve sus turnos
-        [Authorize(Roles = "Client,Admin")]
+        // MIS TURNOS: del usuario actual
+        [Authorize] // cualquier usuario logueado
         public async Task<IActionResult> My()
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return Challenge();
+
             var appointments = await _context.Appointments
                 .Include(a => a.Service)
                 .Include(a => a.Stylist)
-                .Where(a => a.ClientId == user!.Id)
+                .Where(a => a.ClientId == user.Id)
                 .OrderBy(a => a.Start)
                 .ToListAsync();
 
@@ -49,7 +52,7 @@ namespace PeluqueriaTurnos.Controllers
         }
 
         // GET: Crear turno
-        [Authorize(Roles = "Client,Admin")]
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             ViewBag.Services = await _context.Services
@@ -64,29 +67,26 @@ namespace PeluqueriaTurnos.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            var model = new Appointment
+            var vm = new AppointmentCreateViewModel
             {
                 Start = DateTime.Today.AddHours(14),
-                DurationMinutes = 30,
-                ClientName = user?.FullName ?? user?.Email ?? ""
+                ClientName = user?.FullName ?? user?.Email ?? string.Empty
             };
 
-            return View(model);
+            return View(vm);
         }
 
         // POST: Crear turno
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Client,Admin")]
-        public async Task<IActionResult> Create(Appointment model)
+        [Authorize]
+        public async Task<IActionResult> Create(AppointmentCreateViewModel vm)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return Challenge();
-            }
 
-            if (model.Start < DateTime.Now)
+            if (vm.Start < DateTime.Now)
             {
                 ModelState.AddModelError("Start", "El turno debe ser en una fecha/hora futura.");
             }
@@ -103,27 +103,32 @@ namespace PeluqueriaTurnos.Controllers
                     .OrderBy(s => s.Name)
                     .ToListAsync();
 
-                return View(model);
+                return View(vm);
             }
 
-            model.ClientId = user.Id;
-            model.Status = AppointmentStatus.Booked;
+            // Buscar servicio para setear duración desde ahí
+            var service = await _context.Services.FirstAsync(s => s.Id == vm.ServiceId);
 
-            // Si duración no viene seteada, usar la del servicio
-            var service = await _context.Services.FirstAsync(s => s.Id == model.ServiceId);
-            if (model.DurationMinutes <= 0)
+            var appointment = new Appointment
             {
-                model.DurationMinutes = service.DurationMinutes;
-            }
+                ServiceId = vm.ServiceId,
+                StylistId = vm.StylistId,
+                Start = vm.Start,
+                DurationMinutes = service.DurationMinutes,
+                ClientId = user.Id,
+                ClientName = vm.ClientName,
+                ClientPhone = vm.ClientPhone,
+                Status = AppointmentStatus.Booked
+            };
 
-            _context.Appointments.Add(model);
+            _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(My));
         }
 
         // GET: Cancelar (confirmación)
-        [Authorize(Roles = "Client,Admin")]
+        [Authorize]
         public async Task<IActionResult> Cancel(int id)
         {
             var appointment = await _context.Appointments
@@ -147,7 +152,7 @@ namespace PeluqueriaTurnos.Controllers
         // POST: Confirmar cancelación
         [HttpPost, ActionName("Cancel")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Client,Admin")]
+        [Authorize]
         public async Task<IActionResult> CancelConfirmed(int id)
         {
             var appointment = await _context.Appointments.FindAsync(id);
@@ -168,10 +173,7 @@ namespace PeluqueriaTurnos.Controllers
             }
 
             await _context.SaveChangesAsync();
-            if (User.IsInRole("Admin"))
-                return RedirectToAction(nameof(Index));
-            else
-                return RedirectToAction(nameof(My));
+            return RedirectToAction(nameof(My));
         }
     }
 }

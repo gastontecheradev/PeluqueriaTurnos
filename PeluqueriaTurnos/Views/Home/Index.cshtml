@@ -5,16 +5,16 @@
 
 <section class="nf-hero">
     <div class="container nf-hero-inner">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7 text-center">
                 <h1 class="nf-hero-title">
                     Tu próximo <span>corte perfecto</span> te espera en NovaFade.
                 </h1>
-                <p class="nf-hero-subtitle">
+                <p class="nf-hero-subtitle mx-auto">
                     Turnos online, estilistas de confianza y un espacio pensado para que
                     disfrutes el momento. Sin filas, sin espera.
                 </p>
-                <div class="d-flex flex-wrap gap-3">
+                <div class="d-flex flex-wrap justify-content-center gap-3">
                     <a asp-controller="Appointments" asp-action="Create" class="btn nf-btn-primary">
                         Reservar turno ahora
                     </a>
@@ -22,32 +22,10 @@
                         Ver el Studio
                     </a>
                 </div>
-                <div class="nf-hero-meta mt-4">
-                    <span class="badge nf-ba|dge-soft">Atención por turno</span>
+                <div class="nf-hero-meta mt-4 d-flex flex-wrap justify-content-center gap-2">
+                    <span class="badge nf-badge-soft">Atención por turno</span>
                     <span class="badge nf-badge-soft">Wi-Fi & café de cortesía</span>
                     <span class="badge nf-badge-soft">Pagos digitales</span>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="nf-hero-card">
-                    <p class="text-muted mb-2">Próximo nivel en barbería</p>
-                    <h2 class="h4 fw-semibold mb-3">Servicios destacados</h2>
-                    <ul class="list-unstyled mb-0">
-                        @foreach (var s in Model.services.Take(3))
-                        {
-                            <li class="nf-hero-service d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>@s.Name</strong>
-                                    <small class="d-block text-muted">@s.ShortDescription</small>
-                                </div>
-                                <span class="nf-price">$@s.Price.ToString("0")</span>
-                            </li>
-                        }
-                    </ul>
-                    <a asp-controller="Appointments" asp-action="Create" class="nf-link mt-3 d-inline-flex align-items-center">
-                        Ver todos los servicios y agendar
-                        <span class="ms-1">→</span>
-                    </a>
                 </div>
             </div>
         </div>
@@ -76,10 +54,10 @@
                         }
                         <div class="nf-card-body">
                             <h3 class="nf-card-title">@s.Name</h3>
-                            <p class="nf-card-text text-muted">@s.ShortDescription</p>
+                            <p class="nf-card-text text-secondary">@s.ShortDescription</p>
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <span class="nf-price">$@s.Price.ToString("0")</span>
-                                <span class="text-muted small">@s.DurationMinutes min</span>
+                                <span class="text-secondary small">@s.DurationMinutes min</span>
                             </div>
                         </div>
                     </div>
@@ -89,7 +67,7 @@
     </div>
 </section>
 
-<section class="nf-section nf-section-alt" id="equipo">
+@* <section class="nf-section nf-section-alt" id="equipo">
     <div class="container">
         <div class="nf-section-header">
             <h2 class="nf-section-title">Nuestro equipo</h2>
@@ -111,11 +89,11 @@
                         }
                         <div class="nf-card-body text-center">
                             <h3 class="nf-card-title">@st.Name</h3>
-                            <p class="nf-card-text text-muted">@st.Bio</p>
+                            <p class="nf-card-text text-secondary">@st.Bio</p>
                         </div>
                     </div>
                 </div>
             }
         </div>
     </div>
-</section>
+</section> *@
