@@ -25,9 +25,9 @@
 
 body.nf-body {
     min-height: 100vh;
-    background: radial-gradient( circle at top, #111827 0, var(--nf-bg) 55%, #02010a 100% );
+    background: radial-gradient(circle at top, #111827 0, var(--nf-bg) 55%, #02010a 100%);
     color: var(--nf-text);
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: lucida;
 }
 
 a {
@@ -96,18 +96,7 @@ a {
     position: relative;
 }
 
-    /*.nf-hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: url("/img/hero/hero-barber.jpg");
-        background-size: cover;
-        background-position: center;
-        opacity: 0.35;
-        filter: grayscale(0.35);
-        z-index: -2;
-    }*/
-
+    /* imagen de fondo más tenue y fría */
     .nf-hero::before {
         content: "";
         position: absolute;
@@ -130,13 +119,13 @@ a {
 
 .nf-hero-inner {
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .nf-hero-title {
-    font-family: 'Poppins', system-ui;
-    font-size: clamp(2.2rem, 3vw, 2.7rem);
-    font-weight: 700;
+    font-family: lucida;
+    font-size: clamp(3.8rem, 3vw, 2.7rem);
+    font-weight: 400;
     letter-spacing: -0.05em;
     margin-bottom: 1rem;
     color: #f9fafb;
@@ -149,7 +138,7 @@ a {
     }
 
 .nf-hero-subtitle {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: var(--nf-muted);
     max-width: 30rem;
 }
@@ -187,7 +176,7 @@ a {
 }
 
 .nf-section-title {
-    font-family: 'Poppins', system-ui;
+    font-family: lucida;
     font-weight: 600;
     font-size: 1.6rem;
     color: #f9fafb;
@@ -344,7 +333,9 @@ a {
     border-radius: var(--nf-radius-lg);
     border: 1px solid var(--nf-border);
     overflow: hidden;
-    background: radial-gradient(circle at top, #1c1512, #050407);
+    background: transparent;
+    color: #f9fafb;
+    border-color: rgba(148, 163, 184, 0.4);
     box-shadow: var(--nf-shadow-soft);
 }
 
@@ -354,17 +345,33 @@ a {
     font-size: 0.92rem;
 }
 
+    /* Encabezado oscuro */
     .nf-table thead {
-        background: #0b0a0c;
+        background-color: #111827;
     }
 
         .nf-table thead th {
             border-bottom: 1px solid rgba(55, 65, 81, 0.9);
+            font-weight: 600;
+            color: #f9fafb;
         }
 
-    .nf-table tbody tr:nth-child(even) {
-        background: rgba(24, 20, 18, 0.95);
+    /* Fondo base de filas */
+    .nf-table tbody tr {
+        background-color: #050407;
     }
+
+        /* Filas alternadas un poco más claras */
+        .nf-table tbody tr:nth-child(even) {
+            background-color: #120e0d;
+        }
+
+/*  Eliminar el fondo claro de Bootstrap en las celdas */
+.table.nf-table > :not(caption) > * > * {
+    background-color: transparent !important;
+    color: #f9fafb;
+    border-color: rgba(148, 163, 184, 0.35);
+}
 
 /* Auth */
 
@@ -386,7 +393,7 @@ a {
 }
 
 .nf-auth-title {
-    font-family: 'Poppins', system-ui;
+    font-family: lucida;
     font-size: 1.7rem;
     color: #f9fafb;
 }
