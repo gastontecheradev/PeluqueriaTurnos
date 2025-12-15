@@ -446,3 +446,7 @@ a {
             background: radial-gradient(circle at top, rgba(248, 180, 120, 0.2), transparent 60%), linear-gradient( to bottom, rgba(5, 4, 7, 0.98) 0, rgba(17, 12, 10, 0.96) 40%, rgba(12, 10, 9, 0.95) 100% );
         }
 }
+
+.register-form {
+    max-width: 520px !important;
+}
