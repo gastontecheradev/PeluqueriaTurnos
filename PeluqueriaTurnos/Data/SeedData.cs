@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PeluqueriaTurnos.Models;
 
 namespace PeluqueriaTurnos.Data
@@ -14,6 +15,7 @@ namespace PeluqueriaTurnos.Data
             var context = provider.GetRequiredService<ApplicationDbContext>();
             var userManager = provider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
+            var config = provider.GetRequiredService<IConfiguration>(); // 👈 agregamos esto
 
             await context.Database.MigrateAsync();
 
@@ -27,9 +29,15 @@ namespace PeluqueriaTurnos.Data
                 }
             }
 
-            // 2. Usuario admin por defecto
-            string adminEmail = "admin@novafade.studio";
-            string adminPassword = "Admin123!";
+            // 2. Usuario admin por configuración
+            var adminEmail = config["AdminUser:Email"];
+            var adminPassword = config["AdminUser:Password"];
+
+            if (string.IsNullOrWhiteSpace(adminEmail) || string.IsNullOrWhiteSpace(adminPassword))
+            {
+                throw new InvalidOperationException(
+                    "Faltan las claves AdminUser:Email o AdminUser:Password en la configuración.");
+            }
 
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
@@ -105,7 +113,6 @@ namespace PeluqueriaTurnos.Data
                 context.Stylists.AddRange(lucas, sofia);
                 await context.SaveChangesAsync();
 
-                // Asignar servicios a estilistas
                 var allServices = await context.Services.ToListAsync();
 
                 foreach (var svc in allServices)
