@@ -66,34 +66,3 @@
         </div>
     </div>
 </section>
-
-@* <section class="nf-section nf-section-alt" id="equipo">
-    <div class="container">
-        <div class="nf-section-header">
-            <h2 class="nf-section-title">Nuestro equipo</h2>
-            <p class="nf-section-subtitle">
-                Barberos y estilistas que aman lo que hacen.
-            </p>
-        </div>
-
-        <div class="row g-4">
-            @foreach (var st in Model.stylists)
-            {
-                <div class="col-md-4">
-                    <div class="nf-card nf-card-stylist h-100">
-                        @if (!string.IsNullOrEmpty(st.PhotoPath))
-                        {
-                            <div class="nf-avatar-wrapper">
-                                <img src="@st.PhotoPath" alt="@st.Name" class="nf-avatar" />
-                            </div>
-                        }
-                        <div class="nf-card-body text-center">
-                            <h3 class="nf-card-title">@st.Name</h3>
-                            <p class="nf-card-text text-secondary">@st.Bio</p>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-</section> *@
