@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PeluqueriaTurnos.Data;
 using PeluqueriaTurnos.Models;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args); 
 
 // DbContext con LocalDB
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
