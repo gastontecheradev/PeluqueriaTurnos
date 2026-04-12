@@ -12,7 +12,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
-// Identity con roles y nuestro ApplicationUser
+// Identity con roles y ApplicationUser
 builder.Services
     .AddDefaultIdentity<ApplicationUser>(options =>
     {

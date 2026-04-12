@@ -15,7 +15,7 @@ namespace PeluqueriaTurnos.Data
             var context = provider.GetRequiredService<ApplicationDbContext>();
             var userManager = provider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
-            var config = provider.GetRequiredService<IConfiguration>(); // 👈 agregamos esto
+            var config = provider.GetRequiredService<IConfiguration>();
 
             await context.Database.MigrateAsync();
 

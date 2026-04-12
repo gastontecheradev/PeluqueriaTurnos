@@ -7,7 +7,7 @@ using PeluqueriaTurnos.Models;
 
 namespace PeluqueriaTurnos.Controllers
 {
-    [Authorize] // cualquier usuario logueado puede entrar a este controlador
+    [Authorize] // Cualquier usuario logueado puede entrar a este controlador
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;

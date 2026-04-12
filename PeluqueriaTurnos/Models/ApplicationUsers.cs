@@ -11,7 +11,5 @@ namespace PeluqueriaTurnos.Models
 
         [StringLength(200)]
         public string? Notes { get; set; }
-
-        // En el futuro podés agregar más campos (fecha de nacimiento, etc.)
     }
 }
