@@ -24,32 +24,3 @@ Sistema web para la gestión de turnos de una peluquería/barbería. Permite a l
 | Autenticacion | ASP.NET Core Identity |
 | Frontend | Razor Views, Bootstrap 5.3.3 |
 | Fuentes | Google Fonts — Poppins & Inter |
-
-## Estructura del proyecto
-
-PeluqueriaTurnos/
-├── PeluqueriaTurnos.slnx
-└── PeluqueriaTurnos/
-├── Program.cs # Configuracion de servicios y middleware
-├── Controllers/
-│ ├── HomeController.cs # Paginas publicas (Inicio, Estudio, Contacto)
-│ └── AppointmentsController.cs # CRUD de turnos
-├── Models/
-│ ├── ApplicationUsers.cs # Usuario extendido (IdentityUser)
-│ ├── Appointment.cs # Entidad Turno
-│ ├── AppointmentCreateViewModel.cs # ViewModel del formulario de reserva
-│ ├── AppointmentStatus.cs # Enum de estados del turno
-│ ├── Service.cs # Entidad Servicio
-│ ├── Stylist.cs # Entidad Estilista
-│ └── StylistService.cs # Relacion muchos a muchos
-├── Data/
-│ ├── ApplicationDbContext.cs # DbContext
-│ └── SeedData.cs # Datos iniciales (admin, servicios, estilistas)
-├── Views/
-│ ├── Home/ # Index, About, Contact
-│ ├── Appointments/ # Create, My, Index (admin), Cancel
-│ └── Shared/ # Layout, LoginPartial, Error
-├── Areas/Identity/ # Paginas de login/registro (scaffolded)
-├── Migrations/ # Migraciones de EF Core
-└── wwwroot/ # CSS, JS, imagenes, Bootstrap/jQuery
-
