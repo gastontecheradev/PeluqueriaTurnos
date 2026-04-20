@@ -1,26 +1,26 @@
-# NovaFade Studio — Sistema de Reserva de Turnos
+# NovaFade Studio — Appointment Booking System
 
-Sistema web para la gestión de turnos de una peluquería/barbería. Permite a los clientes registrarse, elegir un servicio y estilista, y reservar un turno en línea. Los administradores pueden visualizar y gestionar todos los turnos desde un panel dedicado.
+Web system for managing appointments in a hair salon/barbershop. It allows clients to register, choose a service and stylist, and book an appointment online. Administrators can view and manage all appointments from a dedicated dashboard.
 
-## Caracteristicas principales
+## Main Features
 
-- Registro e inicio de sesion con roles (Admin / Cliente)
-- Catalogo de servicios con nombre, descripcion, precio y duracion
-- Perfiles de estilistas con los servicios que ofrecen
-- Reserva de turnos: seleccion de servicio, estilista, fecha y hora
-- Historial de turnos del cliente con opcion de cancelacion
-- Panel de administracion para ver y cancelar cualquier turno
-- Paginas publicas: inicio, estudio y contacto
-- Datos de contacto del salon configurables via `appsettings.json`
+- Registration and login with roles (Admin / Client)
+- Service catalog with name, description, price, and duration
+- Stylist profiles with the services they offer
+- Appointment booking: service, stylist, date, and time selection
+- Client appointment history with cancellation option
+- Admin panel to view and cancel any appointment
+- Public pages: home, studio, and contact
+- Salon contact details configurable via `appsettings.json`
 
 ## Tech Stack
 
-| Capa | Tecnologia |
+| Layer | Technology |
 |---|---|
 | Backend | ASP.NET Core 10.0 (MVC + Razor Pages) |
-| Lenguaje | C# |
+| Language | C# |
 | ORM | Entity Framework Core 10.0 |
-| Base de datos | SQLite |
-| Autenticacion | ASP.NET Core Identity |
+| Database | SQLite |
+| Authentication | ASP.NET Core Identity |
 | Frontend | Razor Views, Bootstrap 5.3.3 |
-| Fuentes | Google Fonts — Poppins & Inter |
+| Fonts | Google Fonts — Poppins & Inter |
