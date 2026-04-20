@@ -2,6 +2,8 @@
 
 Web system for managing appointments in a hair salon/barbershop. It allows clients to register, choose a service and stylist, and book an appointment online. Administrators can view and manage all appointments from a dedicated dashboard.
 
+🔗 **Live site:** [NovaFade](https://novafadestudio.somee.com/)
+
 ## Main Features
 
 - Registration and login with roles (Admin / Client)
