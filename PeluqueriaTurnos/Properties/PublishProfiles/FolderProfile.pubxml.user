@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\Usuario\source\repos\PeluqueriaTurnos\PeluqueriaTurnos\bin\Release\net10.0\publish\</_PublishTargetUrl>
-    <History>True|2026-04-12T23:40:39.8926087Z||;True|2026-04-12T20:31:26.2401731-03:00||;True|2026-04-12T19:55:44.9770396-03:00||;True|2025-12-22T03:32:13.5351465-03:00||;True|2025-12-21T22:38:02.4005670-03:00||;True|2025-12-21T22:32:54.9272657-03:00||;</History>
+    <History>True|2026-04-21T14:22:08.5284798Z||;True|2026-04-12T20:40:39.8926087-03:00||;True|2026-04-12T20:31:26.2401731-03:00||;True|2026-04-12T19:55:44.9770396-03:00||;True|2025-12-22T03:32:13.5351465-03:00||;True|2025-12-21T22:38:02.4005670-03:00||;True|2025-12-21T22:32:54.9272657-03:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>
