@@ -6,3 +6,4 @@ obj/
 *.db-wal
 appsettings.json
 appsettings.Development.json
+CLAUDE.md
