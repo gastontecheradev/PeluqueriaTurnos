@@ -1,4 +1,11 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+// Menú colapsable del header (< 900px)
+(function () {
+    var header = document.querySelector('[data-nf-header]');
+    var toggle = document.querySelector('[data-nf-nav-toggle]');
+    if (!header || !toggle) return;
 
-// Write your JavaScript code.
+    toggle.addEventListener('click', function () {
+        var open = header.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+})();

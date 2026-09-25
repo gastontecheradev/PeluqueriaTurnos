@@ -1,0 +1,44 @@
+@* Layout a dos columnas para Ingresar / Crear cuenta: sin header ni footer del sitio. *@
+@{
+    var authImage = ViewData["AuthImage"] as string ?? "/img/services/skin-fade.jpg";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - NovaFade Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+</head>
+<body>
+    <div class="nf-auth">
+        <main class="nf-auth__main">
+            <a class="nf-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <span class="nf-brand__name">NovaFade</span>
+                <span class="nf-brand__tagline">Peluquería &amp; barbería · Montevideo</span>
+            </a>
+
+            <div class="nf-auth__body">
+                <div class="nf-auth__form">
+                    @RenderBody()
+                </div>
+            </div>
+
+            <p class="nf-auth__foot">NovaFade Studio · Montevideo, Uruguay</p>
+        </main>
+
+        <div class="nf-auth__media" aria-hidden="true">
+            <img src="@authImage" alt="" />
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

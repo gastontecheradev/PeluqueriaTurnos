@@ -1,61 +1,118 @@
 ﻿@model List<PeluqueriaTurnos.Models.Appointment>
 @using System.Linq
+@using System.Globalization
 
 @{
     ViewData["Title"] = "Mis turnos";
+    var uy = CultureInfo.GetCultureInfo("es-UY");
+    var now = DateTime.Now;
+    var appointments = Model ?? new List<Appointment>();
+
+    var next = appointments
+        .Where(a => a.Status == AppointmentStatus.Booked && a.Start > now)
+        .OrderBy(a => a.Start)
+        .FirstOrDefault();
+
+    var history = appointments
+        .Where(a => a != next)
+        .OrderByDescending(a => a.Start)
+        .ToList();
+
+    string LongDate(DateTime d)
+    {
+        var s = d.ToString("dddd d 'de' MMMM, HH:mm", uy);
+        return char.ToUpper(s[0], uy) + s.Substring(1);
+    }
+
+    string Price(decimal p) => "$" + p.ToString("N0", uy);
+
+    string StatusText(AppointmentStatus s) => s switch
+    {
+        AppointmentStatus.Booked => "Confirmado",
+        AppointmentStatus.CancelledByClient => "Cancelado por vos",
+        AppointmentStatus.CancelledByAdmin => "Cancelado por el salón",
+        AppointmentStatus.Completed => "Realizado",
+        _ => s.ToString()
+    };
+
+    bool IsCancelled(AppointmentStatus s) =>
+        s == AppointmentStatus.CancelledByClient || s == AppointmentStatus.CancelledByAdmin;
 }
 
-<section class="nf-section">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h1 class="nf-section-title mb-1">Mis turnos</h1>
-                <p class="nf-section-subtitle mb-0">Revisá y gestioná tus próximas visitas.</p>
-            </div>
-            <a asp-action="Create" class="btn nf-btn-primary">Nuevo turno</a>
+<div class="nf-container nf-page">
+    <div class="nf-page-head">
+        <div>
+            <h1 class="nf-h1">Mis turnos</h1>
+            <p class="nf-lead">Revisá y gestioná tus próximas visitas.</p>
         </div>
+        <a asp-action="Create" class="nf-btn nf-btn--primary">Reservar otro turno</a>
+    </div>
 
-        @if (Model == null || !Model.Any())
-        {
-            <div class="nf-card text-center py-5">
-                <p class="mb-3">Todavía no tenés turnos agendados.</p>
-                <a asp-action="Create" class="btn nf-btn-primary">Reservar mi primer turno</a>
+    @if (!appointments.Any())
+    {
+        <section class="nf-empty">
+            <div>
+                <h2 class="nf-empty__title">Todavía no reservaste tu primer turno.</h2>
+                <p class="nf-empty__text">
+                    Elegí servicio, estilista y horario. Tu turno queda guardado acá
+                    y lo podés cancelar hasta la hora de la cita.
+                </p>
+                <a asp-action="Create" class="nf-btn nf-btn--primary">Elegir día y hora</a>
             </div>
-        }
-        else
+            <img class="nf-empty__img" src="~/img/services/corte-clasico.jpg" alt="Corte clásico en NovaFade Studio" />
+        </section>
+    }
+    else
+    {
+        @if (next != null)
         {
-            <div class="nf-table-wrapper">
-                <table class="table nf-table align-middle">
+            <section class="nf-panel nf-next" aria-labelledby="proximo-turno">
+                <h2 class="nf-meta nf-next__label" id="proximo-turno">Tu próximo turno</h2>
+                <p class="nf-next__date">@LongDate(next.Start)</p>
+                <p class="nf-next__line">
+                    @next.Service.Name con @next.Stylist.Name · @next.DurationMinutes min · @Price(next.Service.Price)
+                </p>
+                <div class="nf-next__actions">
+                    <a asp-action="Cancel" asp-route-id="@next.Id" class="nf-btn nf-btn--secondary nf-btn--secondary-lg">Cancelar este turno</a>
+                    <span class="nf-meta">Podés cancelar hasta la hora del turno</span>
+                </div>
+            </section>
+        }
+
+        @if (history.Any())
+        {
+            <section class="nf-history" aria-labelledby="historial">
+                <h2 id="historial">Historial</h2>
+                <table class="nf-table">
                     <thead>
                         <tr>
-                            <th>Fecha</th>
-                            <th>Servicio</th>
-                            <th>Estilista</th>
-                            <th>Estado</th>
-                            <th></th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Servicio</th>
+                            <th scope="col">Estilista</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col" class="nf-num">Precio</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var a in Model)
+                        @foreach (var a in history)
                         {
                             <tr>
-                                <td>@a.Start.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@a.Start.ToString("dd/MM/yyyy HH:mm", uy)</td>
                                 <td>@a.Service.Name</td>
-                                <td>@a.Stylist.Name</td>
-                                <td>@a.Status</td>
-                                <td class="text-end">
-                                    @if (a.Status == PeluqueriaTurnos.Models.AppointmentStatus.Booked && a.Start > DateTime.Now)
+                                <td class="nf-muted" data-label="Con">@a.Stylist.Name</td>
+                                <td class="nf-muted">
+                                    @StatusText(a.Status)
+                                    @if (a.Status == AppointmentStatus.Booked && a.Start > now)
                                     {
-                                        <a asp-action="Cancel" asp-route-id="@a.Id" class="btn btn-sm nf-btn-secondary">
-                                            Cancelar
-                                        </a>
+                                        <a asp-action="Cancel" asp-route-id="@a.Id" class="nf-inline-action">Cancelar</a>
                                     }
                                 </td>
+                                <td class="nf-num">@(IsCancelled(a.Status) ? "—" : Price(a.Service.Price))</td>
                             </tr>
                         }
                     </tbody>
                 </table>
-            </div>
+            </section>
         }
-    </div>
-</section>
+    }
+</div>

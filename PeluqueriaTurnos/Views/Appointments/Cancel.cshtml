@@ -1,36 +1,39 @@
 ﻿@model PeluqueriaTurnos.Models.Appointment
+@using System.Globalization
 @{
     ViewData["Title"] = "Cancelar turno";
+    var uy = CultureInfo.GetCultureInfo("es-UY");
+    var when = Model.Start.ToString("dddd d 'de' MMMM, HH:mm", uy);
+    when = char.ToUpper(when[0], uy) + when.Substring(1);
 }
 
-<section class="nf-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="nf-card nf-card-warning">
-                    <h1 class="nf-section-title mb-3">Cancelar turno</h1>
-                    <p class="text-muted">
-                        ¿Seguro que querés cancelar este turno?
-                    </p>
+<div class="nf-cancel">
+    <h1 class="nf-h1-sm">¿Cancelamos este turno?</h1>
+    <p class="nf-lead">
+        El horario queda libre para otra persona. Si querés venir otro día,
+        podés reservar un turno nuevo cuando quieras.
+    </p>
 
-                    <dl class="row">
-                        <dt class="col-sm-4">Fecha y hora</dt>
-                        <dd class="col-sm-8">@Model.Start.ToString("dd/MM/yyyy HH:mm")</dd>
-
-                        <dt class="col-sm-4">Servicio</dt>
-                        <dd class="col-sm-8">@Model.Service.Name</dd>
-
-                        <dt class="col-sm-4">Estilista</dt>
-                        <dd class="col-sm-8">@Model.Stylist.Name</dd>
-                    </dl>
-
-                    <form asp-action="Cancel" method="post">
-                        <input type="hidden" asp-for="Id" />
-                        <button type="submit" class="btn nf-btn-danger me-2">Sí, cancelar</button>
-                        <a asp-action="My" class="btn nf-btn-secondary">Volver</a>
-                    </form>
-                </div>
-            </div>
+    <dl class="nf-dl nf-cancel__dl">
+        <div class="nf-dl__row">
+            <dt>Día y hora</dt>
+            <dd>@when</dd>
         </div>
+        <div class="nf-dl__row">
+            <dt>Servicio</dt>
+            <dd>@Model.Service.Name</dd>
+        </div>
+        <div class="nf-dl__row">
+            <dt>Estilista</dt>
+            <dd>@Model.Stylist.Name</dd>
+        </div>
+    </dl>
+
+    <div class="nf-cancel__actions">
+        <form asp-action="Cancel" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="nf-btn nf-btn--danger">Sí, cancelar el turno</button>
+        </form>
+        <a asp-action="My" class="nf-link">Volver a Mis turnos</a>
     </div>
-</section>
+</div>

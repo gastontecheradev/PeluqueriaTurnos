@@ -1,50 +1,122 @@
 ﻿@model IEnumerable<PeluqueriaTurnos.Models.Appointment>
+@using System.Globalization
 @{
-    ViewData["Title"] = "Panel de turnos";
+    ViewData["Title"] = "Agenda";
+    var uy = CultureInfo.GetCultureInfo("es-UY");
+    var now = DateTime.Now;
+    var today = DateTime.Today;
+    var all = Model.ToList();
+
+    // Semana de lunes a domingo que contiene hoy
+    var weekStart = today.AddDays(-(((int)today.DayOfWeek + 6) % 7));
+    var weekEnd = weekStart.AddDays(7);
+    var bookedThisWeek = all.Count(a => a.Status == AppointmentStatus.Booked && a.Start >= weekStart && a.Start < weekEnd);
+
+    var upcomingDays = all
+        .Where(a => a.Start.Date >= today)
+        .GroupBy(a => a.Start.Date)
+        .OrderBy(g => g.Key)
+        .ToList();
+
+    var past = all
+        .Where(a => a.Start.Date < today)
+        .OrderByDescending(a => a.Start)
+        .ToList();
+
+    string DayTitle(DateTime d)
+    {
+        var s = d.ToString("dddd d 'de' MMMM", uy);
+        return char.ToUpper(s[0], uy) + s.Substring(1);
+    }
+
+    string CountText(int n) => n == 1 ? "1 turno" : $"{n} turnos";
+
+    string? CancelledText(AppointmentStatus s) => s switch
+    {
+        AppointmentStatus.CancelledByClient => "Cancelado por el cliente",
+        AppointmentStatus.CancelledByAdmin => "Cancelado por el salón",
+        _ => null
+    };
+
+    async Task Slot(Appointment a, bool showDate)
+    {
+        var cancelled = CancelledText(a.Status);
+        <li class="nf-slot @(cancelled != null ? "is-cancelled" : null)">
+            <span class="nf-slot__time">
+                @if (showDate)
+                {
+                    <span class="nf-slot__date">@a.Start.ToString("dd/MM", uy)</span>
+                }
+                @a.Start.ToString("HH:mm", uy)
+            </span>
+            <span class="nf-slot__client">@a.ClientName</span>
+            <span class="nf-slot__muted nf-slot__service">@a.Service.Name</span>
+            <span class="nf-slot__muted nf-slot__stylist">@a.Stylist.Name</span>
+            <span class="nf-slot__action">
+                @if (cancelled != null)
+                {
+                    <span class="nf-status-cancelled">@cancelled</span>
+                }
+                else if (a.Status == AppointmentStatus.Booked && a.Start > now)
+                {
+                    <a asp-action="Cancel" asp-route-id="@a.Id" class="nf-btn nf-btn--secondary nf-btn--secondary-danger">Cancelar</a>
+                }
+                else if (a.Status == AppointmentStatus.Completed)
+                {
+                    <span class="nf-slot__muted">Realizado</span>
+                }
+            </span>
+        </li>
+    }
 }
 
-<section class="nf-section">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h1 class="nf-section-title mb-1">Panel de turnos</h1>
-                <p class="nf-section-subtitle mb-0">Vista general de todos los turnos del salón.</p>
-            </div>
+<div class="nf-container nf-page">
+    <div class="nf-page-head">
+        <div>
+            <h1 class="nf-h1">Agenda</h1>
+            <p class="nf-lead">Vista general de todos los turnos del salón.</p>
         </div>
-
-        <div class="nf-table-wrapper">
-            <table class="table nf-table align-middle">
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Cliente</th>
-                        <th>Servicio</th>
-                        <th>Estilista</th>
-                        <th>Estado</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var a in Model)
-                    {
-                        <tr>
-                            <td>@a.Start.ToString("dd/MM/yyyy HH:mm")</td>
-                            <td>@a.ClientName</td>
-                            <td>@a.Service.Name</td>
-                            <td>@a.Stylist.Name</td>
-                            <td>@a.Status</td>
-                            <td class="text-end">
-                                @if (a.Status == PeluqueriaTurnos.Models.AppointmentStatus.Booked && a.Start > DateTime.Now)
-                                {
-                                    <a asp-action="Cancel" asp-route-id="@a.Id" class="btn btn-sm nf-btn-secondary">
-                                        Cancelar
-                                    </a>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+        <p class="nf-counter">
+            <span class="nf-counter__value">@bookedThisWeek</span>
+            <span class="nf-counter__label">turnos confirmados esta semana</span>
+        </p>
     </div>
-</section>
+
+    @if (!all.Any())
+    {
+        <p class="nf-agenda-empty">Todavía no hay turnos reservados.</p>
+    }
+
+    @foreach (var day in upcomingDays)
+    {
+        var items = day.OrderBy(a => a.Start).ToList();
+        <section class="nf-day" aria-labelledby="dia-@day.Key.ToString("yyyyMMdd")">
+            <div class="nf-day__head">
+                <h2 class="nf-day__title" id="dia-@day.Key.ToString("yyyyMMdd")">@DayTitle(day.Key)</h2>
+                <span class="nf-meta">@CountText(items.Count)</span>
+            </div>
+            <ul class="nf-day__list">
+                @foreach (var a in items)
+                {
+                    await Slot(a, false);
+                }
+            </ul>
+        </section>
+    }
+
+    @if (past.Any())
+    {
+        <section class="nf-day" aria-labelledby="dia-pasados">
+            <div class="nf-day__head">
+                <h2 class="nf-day__title" id="dia-pasados">Pasados</h2>
+                <span class="nf-meta">@CountText(past.Count)</span>
+            </div>
+            <ul class="nf-day__list">
+                @foreach (var a in past)
+                {
+                    await Slot(a, true);
+                }
+            </ul>
+        </section>
+    }
+</div>

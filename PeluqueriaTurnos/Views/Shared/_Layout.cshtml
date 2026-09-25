@@ -2,6 +2,16 @@
 @using PeluqueriaTurnos.Models
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+
+    string? AriaCurrent(string controller, string action) =>
+        string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase)
+        && string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase)
+            ? "page"
+            : null;
+}
 
 <!DOCTYPE html>
 <html lang="es">
@@ -13,10 +23,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
@@ -29,53 +36,38 @@
     <meta property="og:image" content="https://novafadestudio.somee.com/img/og-image.jpg" />
     <meta property="og:type" content="website" />
 </head>
-<body class="nf-body">
-    <header class="nf-header">
-        <nav class="navbar navbar-expand-lg navbar-dark nf-navbar">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
-                    <div class="nf-logo me-2">NF</div>
-                    <div class="nf-brand-text">
-                        <span class="fw-bold">NovaFade Studio</span>
-                        <small class="d-block text-secondary">Peluquería & Barbería</small>
-                    </div>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body>
+    <header class="nf-header" data-nf-header>
+        <div class="nf-header__inner">
+            <a class="nf-brand" asp-controller="Home" asp-action="Index">
+                <span class="nf-brand__name">NovaFade</span>
+                <span class="nf-brand__tagline">Peluquería &amp; barbería · Montevideo</span>
+            </a>
 
-                <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="About">El Studio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Contact">Contacto</a>
-                        </li>
-                        @if (SignInManager.IsSignedIn(User))
+            <button type="button" class="nf-btn nf-btn--secondary nf-btn--logout nf-nav-toggle"
+                    aria-expanded="false" aria-controls="nf-nav" data-nf-nav-toggle>
+                Menú
+            </button>
+
+            <nav class="nf-nav" id="nf-nav" aria-label="Principal">
+                <ul class="nf-nav__links">
+                    <li><a class="nf-nav__link" asp-controller="Home" asp-action="Index" aria-current="@AriaCurrent("Home", "Index")">Inicio</a></li>
+                    <li><a class="nf-nav__link" asp-controller="Home" asp-action="About" aria-current="@AriaCurrent("Home", "About")">El Studio</a></li>
+                    <li><a class="nf-nav__link" asp-controller="Home" asp-action="Contact" aria-current="@AriaCurrent("Home", "Contact")">Contacto</a></li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li><a class="nf-nav__link" asp-controller="Appointments" asp-action="Create" aria-current="@AriaCurrent("Appointments", "Create")">Reservar turno</a></li>
+                        <li><a class="nf-nav__link" asp-controller="Appointments" asp-action="My" aria-current="@AriaCurrent("Appointments", "My")">Mis turnos</a></li>
+                        @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Appointments" asp-action="Create">Reservar turno</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Appointments" asp-action="My">Mis turnos</a>
-                            </li>
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Appointments" asp-action="Index">Panel turnos</a>
-                                </li>
-                            }
+                            <li><a class="nf-nav__link" asp-controller="Appointments" asp-action="Index" aria-current="@AriaCurrent("Appointments", "Index")">Agenda</a></li>
                         }
-                    </ul>
+                    }
+                </ul>
 
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
+                <partial name="_LoginPartial" />
+            </nav>
+        </div>
     </header>
 
     <main class="nf-main">
@@ -83,22 +75,21 @@
     </main>
 
     <footer class="nf-footer">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <div class="nf-container nf-footer__inner">
             <div>
-                <strong>NovaFade Studio</strong> &copy; @DateTime.Now.Year
-                <span class="text-secondary ms-2">Montevideo, Uruguay</span>
+                <div class="nf-footer__name">NovaFade Studio</div>
+                <div class="nf-footer__meta">Montevideo, Uruguay · @DateTime.Now.Year</div>
             </div>
-            <div class="nf-footer-links">
-                <a asp-controller="Home" asp-action="Contact">Agendá tu turno</a>
-                <span class="mx-2">·</span>
-                <a href="#">Instagram</a>
-                <span class="mx-2">·</span>
-                <a href="#">WhatsApp</a>
-            </div>
+            <ul class="nf-footer__links">
+                <li><a asp-controller="Home" asp-action="Contact">Agendá tu turno</a></li>
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">WhatsApp</a></li>
+            </ul>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -1,76 +1,125 @@
 ﻿@model PeluqueriaTurnos.Models.AppointmentCreateViewModel
 @using PeluqueriaTurnos.Models
+@using System.Globalization
 @{
     ViewData["Title"] = "Reservar turno";
     var services = (IEnumerable<Service>)ViewBag.Services;
     var stylists = (IEnumerable<Stylist>)ViewBag.Stylists;
+    var uy = CultureInfo.GetCultureInfo("es-UY");
+
+    // El controlador agrega este error cuando la fecha es pasada; acá se muestra con el texto del diseño.
+    const string pastDateServerMessage = "El turno debe ser en una fecha/hora futura.";
+    var pastDateMessage = $"Ese día ya pasó. Elegí una fecha desde hoy, {DateTime.Today.ToString("dd/MM", uy)}, en adelante.";
+    var startHasPastError = ViewData.ModelState["Start"]?.Errors.Any(e => e.ErrorMessage == pastDateServerMessage) == true;
 }
 
-<section class="nf-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-7">
-                <div class="nf-card nf-card-form">
-                    <h1 class="nf-section-title mb-2">Reservar turno</h1>
-                    <p class="nf-section-subtitle mb-4">
-                        Elegí el servicio, estilista y horario que mejor se adapte a vos.
-                    </p>
+<div class="nf-container nf-page">
+    <form asp-action="Create" method="post" novalidate data-nf-booking data-past-message="@pastDateMessage">
+        <div class="nf-book">
+            <div>
+                <h1 class="nf-h1">Reservar turno</h1>
+                <p class="nf-lead">
+                    Elegí el servicio, estilista y horario que mejor se adapte a vos.
+                </p>
 
-                    <form asp-action="Create" method="post">
-                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                <div asp-validation-summary="ModelOnly" class="nf-alert nf-book__alert" role="alert"></div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Servicio</label>
-                            <select asp-for="ServiceId" class="form-select nf-input">
-                                <option value="">Seleccionar...</option>
-                                @foreach (var s in services)
-                                {
-                                    <option value="@s.Id">@s.Name (@s.DurationMinutes min)</option>
-                                }
-                            </select>
-                            <span asp-validation-for="ServiceId" class="text-danger"></span>
-                        </div>
+                <fieldset class="nf-fieldset nf-book__services" aria-describedby="ServiceId-error">
+                    <legend class="nf-label">Servicio</legend>
+                    <ul class="nf-radio-list">
+                        @foreach (var s in services)
+                        {
+                            <li>
+                                <label class="nf-radio-row" for="ServiceId_@s.Id">
+                                    <input type="radio" asp-for="ServiceId" id="ServiceId_@s.Id" value="@s.Id"
+                                           data-name="@s.Name"
+                                           data-duration="@s.DurationMinutes min"
+                                           data-price="$@s.Price.ToString("N0", uy)" />
+                                    <span class="nf-radio-row__name">@s.Name</span>
+                                    <span class="nf-radio-row__duration">@s.DurationMinutes min</span>
+                                    <span class="nf-radio-row__price">$@s.Price.ToString("N0", uy)</span>
+                                </label>
+                            </li>
+                        }
+                    </ul>
+                    <span asp-validation-for="ServiceId" id="ServiceId-error" class="nf-error"></span>
+                </fieldset>
 
-                        <div class="mb-3">
-                            <label class="form-label">Estilista</label>
-                            <select asp-for="StylistId" class="form-select nf-input">
-                                <option value="">Seleccionar...</option>
-                                @foreach (var st in stylists)
-                                {
-                                    <option value="@st.Id">@st.Name</option>
-                                }
-                            </select>
-                            <span asp-validation-for="StylistId" class="text-danger"></span>
-                        </div>
+                <div class="nf-form-grid nf-book__section">
+                    <div class="nf-field">
+                        <label class="nf-label" for="StylistId">Estilista</label>
+                        <select asp-for="StylistId" class="nf-select" aria-describedby="StylistId-error">
+                            <option value="">Elegí un estilista</option>
+                            @foreach (var st in stylists)
+                            {
+                                <option value="@st.Id">@st.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="StylistId" id="StylistId-error" class="nf-error"></span>
+                    </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Start" class="form-label">Fecha y hora</label>
-                            <input asp-for="Start" type="datetime-local" class="form-control nf-input" />
-                            <span asp-validation-for="Start" class="text-danger"></span>
-                        </div>
+                    <div class="nf-field">
+                        <label asp-for="Start" class="nf-label">Día y hora</label>
+                        <input asp-for="Start" type="datetime-local" class="nf-input" aria-describedby="Start-error" />
+                        @if (startHasPastError)
+                        {
+                            <span id="Start-error" class="field-validation-error" data-valmsg-for="Start" data-valmsg-replace="true">@pastDateMessage</span>
+                        }
+                        else
+                        {
+                            <span asp-validation-for="Start" id="Start-error" class="nf-error"></span>
+                        }
+                    </div>
 
-                        <div class="mb-3">
-                            <label asp-for="ClientName" class="form-label">Nombre para el turno</label>
-                            <input asp-for="ClientName" class="form-control nf-input" />
-                            <span asp-validation-for="ClientName" class="text-danger"></span>
-                        </div>
+                    <div class="nf-field">
+                        <label asp-for="ClientName" class="nf-label">Nombre para el turno</label>
+                        <input asp-for="ClientName" class="nf-input" autocomplete="name" aria-describedby="ClientName-error" />
+                        <span asp-validation-for="ClientName" id="ClientName-error" class="nf-error"></span>
+                    </div>
 
-                        <div class="mb-3">
-                            <label asp-for="ClientPhone" class="form-label">Teléfono de contacto</label>
-                            <input asp-for="ClientPhone" class="form-control nf-input" />
-                            <span asp-validation-for="ClientPhone" class="text-danger"></span>
-                        </div>
-
-                        <button type="submit" class="btn nf-btn-primary w-100">
-                            Confirmar turno
-                        </button>
-                    </form>
+                    <div class="nf-field">
+                        <label asp-for="ClientPhone" class="nf-label">Teléfono de contacto</label>
+                        <input asp-for="ClientPhone" class="nf-input" type="tel" autocomplete="tel"
+                               placeholder="Para avisarte si hay un cambio" aria-describedby="ClientPhone-error" />
+                        <span asp-validation-for="ClientPhone" id="ClientPhone-error" class="nf-error"></span>
+                    </div>
                 </div>
             </div>
+
+            <aside class="nf-panel nf-summary" aria-labelledby="tu-turno">
+                <h2 class="nf-panel-title" id="tu-turno">Tu turno</h2>
+                <dl class="nf-dl nf-summary__dl" aria-live="polite">
+                    <div class="nf-dl__row">
+                        <dt>Servicio</dt>
+                        <dd class="is-missing" data-summary="service">Sin definir</dd>
+                    </div>
+                    <div class="nf-dl__row">
+                        <dt>Estilista</dt>
+                        <dd class="is-missing" data-summary="stylist">Sin definir</dd>
+                    </div>
+                    <div class="nf-dl__row">
+                        <dt>Día y hora</dt>
+                        <dd class="is-missing" data-summary="start">Sin definir</dd>
+                    </div>
+                    <div class="nf-dl__row">
+                        <dt>Duración</dt>
+                        <dd class="is-missing" data-summary="duration">Sin definir</dd>
+                    </div>
+                </dl>
+                <div class="nf-summary__total">
+                    <span class="nf-meta">Total a pagar en el local</span>
+                    <span class="nf-summary__total-value" data-summary="total">—</span>
+                </div>
+                <button type="submit" class="nf-btn nf-btn--primary nf-btn--block" data-nf-submit>Confirmar turno</button>
+                <p class="nf-meta nf-summary__note">
+                    Podés cancelarlo desde Mis turnos hasta la hora del turno.
+                </p>
+            </aside>
         </div>
-    </div>
-</section>
+    </form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/booking.js" asp-append-version="true"></script>
 }
