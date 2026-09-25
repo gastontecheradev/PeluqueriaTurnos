@@ -2,25 +2,39 @@
     ViewData["Title"] = "El Studio";
 }
 
-<section class="nf-section">
-    <div class="container">
-        <div class="row g-5 align-items-center">
-            <div class="col-md-6">
-                <h1 class="nf-section-title mb-3">NovaFade Studio</h1>
-                <p class="lead text-secondary">
-                    Un espacio moderno donde combinamos técnica, estilo y una experiencia
-                    cómoda desde que reservás tu turno hasta que salís con corte nuevo.
-                </p>
-                <p class="text-secondary">
-                    Trabajamos solo con atención por turno para respetar tu tiempo.
-                    Mientras esperás, tenés café, agua y Wi-Fi disponible.
-                </p>
-            </div>
-            <div class="col-md-6">
-                <div class="nf-card nf-card-photo h-100">
-                    <img src="/img/hero/local.jpg" alt="Interior de NovaFade Studio" class="img-fluid" />
-                </div>
-            </div>
-        </div>
+<section class="nf-studio-head">
+    <img src="~/img/hero/local.jpg" alt="" />
+    <div class="nf-container nf-studio-head__inner">
+        <h1 class="nf-h1-studio">NovaFade Studio</h1>
     </div>
 </section>
+
+<div class="nf-container">
+    <div class="nf-studio-body">
+        <div class="nf-studio-body__text">
+            <p class="nf-studio-body__lead">
+                Un espacio donde combinamos técnica, estilo y una experiencia cómoda
+                desde que reservás tu turno hasta que salís con corte nuevo.
+            </p>
+            <p class="nf-muted">
+                Trabajamos solo con atención por turno para respetar tu tiempo. Cada turno
+                tiene la duración real del servicio, así no se pisan y nadie te apura en el sillón.
+            </p>
+            <p class="nf-muted">
+                Mientras esperás, tenés café, agua y Wi-Fi. Al terminar pagás en el local,
+                en efectivo o con pagos digitales.
+            </p>
+            <a class="nf-btn nf-btn--primary" asp-controller="Appointments" asp-action="Create">Reservar turno</a>
+        </div>
+
+        <aside class="nf-panel" aria-labelledby="como-funciona">
+            <h2 class="nf-panel-title" id="como-funciona">Cómo funciona</h2>
+            <ol class="nf-steps">
+                <li><strong>Creá tu cuenta</strong>Con tu mail y una contraseña.</li>
+                <li><strong>Elegí servicio y estilista</strong>Ves la duración y el precio antes de confirmar.</li>
+                <li><strong>Reservá día y hora</strong>El turno queda en Mis turnos.</li>
+                <li><strong>Vení a tu hora</strong>Si no podés, cancelalo desde la web hasta la hora del turno.</li>
+            </ol>
+        </aside>
+    </div>
+</div>

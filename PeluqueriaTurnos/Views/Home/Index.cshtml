@@ -1,68 +1,136 @@
 ﻿@model (List<PeluqueriaTurnos.Models.Service> services, List<PeluqueriaTurnos.Models.Stylist> stylists)
+@using System.Globalization
 @{
     ViewData["Title"] = "Inicio";
+    var uy = CultureInfo.GetCultureInfo("es-UY");
+    var city = ViewBag.City as string;
+
+    string ReserveLabel(string name)
+    {
+        var n = name.ToLowerInvariant();
+        if (n.Contains("barba")) return "Reservar barba";
+        if (n.Contains("fade")) return "Reservar fade";
+        if (n.Contains("corte")) return "Reservar corte";
+        return "Reservar este servicio";
+    }
+
+    string StylistNames()
+    {
+        var names = Model.stylists.Select(s => s.Name).ToList();
+        if (names.Count <= 1) return string.Join("", names);
+        return string.Join(", ", names.Take(names.Count - 1)) + " y " + names.Last();
+    }
 }
 
 <section class="nf-hero">
-    <div class="container nf-hero-inner">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-xl-7 text-center">
-                <h1 class="nf-hero-title">
-                    Tu próximo <span>corte ideal</span> te espera en NovaFade.
-                </h1>
-                <p class="nf-hero-subtitle mx-auto">
-                    Turnos online, estilistas de confianza y un espacio pensado para que
-                    disfrutes el momento. Sin filas, sin espera.
-                </p>
-                <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a asp-controller="Appointments" asp-action="Create" class="btn nf-btn-primary">
-                        Reservar turno ahora
-                    </a>
-                    <a asp-controller="Home" asp-action="About" class="btn nf-btn-outline">
-                        Ver el Studio
-                    </a>
-                </div>
-                <div class="nf-hero-meta mt-4 d-flex flex-wrap justify-content-center gap-2">
-                    <span class="badge nf-badge-soft">Atención por turno</span>
-                    <span class="badge nf-badge-soft">Wi-Fi & café de cortesía</span>
-                    <span class="badge nf-badge-soft">Pagos digitales</span>
-                </div>
+    <img class="nf-hero__img" src="~/img/hero/hero-barber.jpg" alt="" />
+    <div class="nf-container nf-hero__inner">
+        <div class="nf-hero__content">
+            <h1 class="nf-h1-hero">Tu próximo corte te espera en NovaFade.</h1>
+            <p class="nf-hero__lead">
+                Reservás online, elegís estilista y llegás a tu hora.
+                Sin filas y sin espera.
+            </p>
+            <div class="nf-hero__actions">
+                <a class="nf-btn nf-btn--primary" asp-controller="Appointments" asp-action="Create">Elegir día y hora</a>
+                <a class="nf-link" href="#servicios">Ver servicios y precios</a>
             </div>
         </div>
     </div>
 </section>
 
-<section class="nf-section" id="servicios">
-    <div class="container">
-        <div class="nf-section-header">
-            <h2 class="nf-section-title">Servicios</h2>
-            <p class="nf-section-subtitle">
-                Cortes clásicos, fades modernos y cuidado de barba en un solo lugar.
+<section class="nf-strip" aria-label="Cómo trabajamos">
+    <div class="nf-container">
+        <ul class="nf-strip__list">
+            <li class="nf-strip__item">
+                <div class="nf-strip__title">Solo con turno</div>
+                <div class="nf-meta">Llegás a tu hora y te atendemos a tu hora.</div>
+            </li>
+            <li class="nf-strip__item">
+                <div class="nf-strip__title">Café, agua y Wi-Fi</div>
+                <div class="nf-meta">De cortesía mientras esperás.</div>
+            </li>
+            <li class="nf-strip__item">
+                <div class="nf-strip__title">Pagás como quieras</div>
+                <div class="nf-meta">Efectivo o pagos digitales, en el local.</div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section class="nf-services" id="servicios">
+    <div class="nf-container">
+        <div class="nf-services__head">
+            <h2 class="nf-h2">Servicios</h2>
+            <p class="nf-services__intro">
+                Cortes clásicos, fades y barba a navaja. El precio es final y se paga en el local.
             </p>
         </div>
 
-        <div class="row g-4">
+        <ul class="nf-service-list">
             @foreach (var s in Model.services)
             {
-                <div class="col-md-4">
-                    <div class="nf-card nf-card-service h-100">
-                        @if (!string.IsNullOrEmpty(s.ImagePath))
+                <li class="nf-service">
+                    @if (!string.IsNullOrEmpty(s.ImagePath))
+                    {
+                        <img class="nf-service__img" src="@s.ImagePath" alt="@s.Name" loading="lazy" />
+                    }
+                    else
+                    {
+                        <div aria-hidden="true"></div>
+                    }
+                    <div>
+                        <h3 class="nf-h3">@s.Name</h3>
+                        @if (!string.IsNullOrEmpty(s.ShortDescription))
                         {
-                            <div class="nf-card-img">
-                                <img src="@s.ImagePath" alt="@s.Name" class="img-fluid" />
-                            </div>
+                            <p class="nf-service__desc">@s.ShortDescription</p>
                         }
-                        <div class="nf-card-body">
-                            <h3 class="nf-card-title">@s.Name</h3>
-                            <p class="nf-card-text text-secondary">@s.ShortDescription</p>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <span class="nf-price">$@s.Price.ToString("0")</span>
-                                <span class="text-secondary small">@s.DurationMinutes min</span>
-                            </div>
-                        </div>
+                        <p class="nf-meta nf-service__duration">@s.DurationMinutes min de sillón</p>
                     </div>
-                </div>
+                    <div class="nf-service__side">
+                        <span class="nf-price">$@s.Price.ToString("N0", uy)</span>
+                        <a class="nf-btn nf-btn--secondary" asp-controller="Appointments" asp-action="Create" asp-route-serviceId="@s.Id">@ReserveLabel(s.Name)</a>
+                    </div>
+                </li>
             }
+        </ul>
+    </div>
+</section>
+
+<section class="nf-local">
+    <div class="nf-container">
+        <div class="nf-local__grid">
+            <div class="nf-local__text">
+                <h2 class="nf-h2">El local, sobre Montevideo</h2>
+                <p class="nf-lead">
+                    Un espacio chico y tranquilo, con pocos sillones y turnos espaciados
+                    para que nadie te apure.
+                </p>
+                <dl class="nf-dl nf-local__dl">
+                    @if (!string.IsNullOrWhiteSpace(city))
+                    {
+                        <div class="nf-dl__row">
+                            <dt>Dónde</dt>
+                            <dd>@city</dd>
+                        </div>
+                    }
+                    @if (Model.stylists.Any())
+                    {
+                        <div class="nf-dl__row">
+                            <dt>Estilistas</dt>
+                            <dd>@StylistNames()</dd>
+                        </div>
+                    }
+                    <div class="nf-dl__row">
+                        <dt>Turnos</dt>
+                        <dd>Solo con reserva previa, desde esta web.</dd>
+                    </div>
+                </dl>
+                <a class="nf-link" asp-controller="Home" asp-action="About">Conocer el Studio</a>
+            </div>
+            <div class="nf-local__media">
+                <img src="~/img/hero/local.jpg" alt="Interior de NovaFade Studio" loading="lazy" />
+            </div>
         </div>
     </div>
 </section>
